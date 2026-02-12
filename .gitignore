@@ -1,0 +1,23 @@
+# --- ENVIRONNEMENT VIRTUEL ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- PYTHON ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- PYINSTALLER ---
+build/
+dist/
+*.spec
+
+# --- ÉDITEURS DE CODE ---
+.idea/
+.vscode/
+
+# --- SYSTÈME ---
+Thumbs.db
+.DS_Store
