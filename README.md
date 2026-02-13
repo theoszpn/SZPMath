@@ -63,7 +63,7 @@ python main.py
 
 ## Project Structure
 
-SZPMath_aplha/\
+SZPMath_alpha/\
 ├── assets/\
 ├── modules/\
 │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── algebra/\
