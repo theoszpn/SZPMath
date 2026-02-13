@@ -29,6 +29,9 @@ Matplotlib (v3.10.x) pour les rendus statistiques de haute qualité.
 
 **Packaging** : PyInstaller pour la distribution d'exécutables autonomes sous Windows.
 
+## Installation (Utilisateur)
+Pour installer le logiciel (en .exe), suivre le guide utilisateur de la dernière release.
+
 ## Installation (Développement)
 Pour cloner le projet et l'exécuter localement :
 
