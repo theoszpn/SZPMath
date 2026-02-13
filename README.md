@@ -1,59 +1,64 @@
 # SZPMath (Alpha v1.0)
-SZPMath est un outil pédagogique dédié au calcul mathématique avancé, conçu pour offrir une interface fluide, dynamique et interractive. Développé en Python 3.13, il combine la puissance de calcul de NumPy et Matplotlib avec une interface utilisateur moderne sous PySide6.\
-Disponible sur Windows, MacOS et Linux.
+ **English Version** | [Version Française](./README.fr.md)\
+ SZPMath is a powerful educational tool dedicated to advanced mathematical computing, designed to offer a smooth, dynamic and interactive interface. The main objective is to offer precise and detailed explanations to complex mathematical concepts, allowing students to locally study, discover and practice theory. Developed using Python 3.13, it combines the computing power of NumPy and MatPlotLib with a modern UI under PySide6.\
+ Availible on Windows, MacOS and Linux.
 
-## Fonctionnalités
-**Algèbre Linéaire** : Calcul matriciel, Résolution de systèmes avec Gauss/Cramer, étude d'espaces et sous espaces vectoriels, diagonalisation, rendu en 2D et 3D de transformations et combinaisons linéaires.
+ **Note :** : While this documentation is in English to reach a broader audience, the application interface and logs are currently available only in French. Future versions will include full translation.
 
-**Calculus** : Visualisation interactive et dynamique de fonctions, étude de limites/continuité, calcul dérivé et intégral.
+## Features
+**Linear Algebra** : Matrix operations, linear system solvers (Gauss, Cramer), vector space analysis, diagonalization, dynamic 2D and 3D rendering of linear transformations and combinations.
 
-**Statistiques** : Analyse de séries discrètes et continues : paramètres de tendance centrale/dispertion/forme, visualisation avec des graphs et boxplots.
+**Calculus** : Interactive visualization of complex functions, study of limits/continuity, and derivative/integral calculus.
 
-**Probabilités** : Arrangements, Analyse interractive de lois discrètes (Binomiale, Poisson, Géometrique) et continues (Normale, Exponentielle).
+**Statistics** : Detailed analysis of discrete and continuous data series : central tendency, dispertion and shape parameters, with graphical and boxplot visualization.
 
-## Stack Technique (Édition 2026)
-Le projet utilise les dernières versions stables pour garantir performance et compatibilité :
+**Probabilities** : Arrangements, interactive analysis of discrete (Binomial, Poisson, Geometric) and continuous (Normal, exponential) distributions.
 
-**Interface Graphique** : PySide6 (v6.8.2) pour un rendu natif et une gestion optimisée du High DPI.
+## Technical Stack (2026 edition)
+The project uses the latest stable versions of the scientific python libraries, guaranteeing performance and compatibility :
 
-**Moteur de Calcul** : NumPy (v2.2.0+) pour les calculs numériques intensifs et SymPy pour le calcul symbolique.
 
-**Visualisation** : 
+**GUI** : PySide6 (v6.8.2) for a modern user experience and high DPI screen resolution compatibility.
 
-OpenGL (v3.1.10) pour le rendu 3D.
+**Core computing** : NumPy (v2.2.0+) for intensive and complex numerical computing, combined with SymPy for optimized symbolical computing.
 
-PyQtGraph (v0.13.3) pour les graphiques interactifs temps réel.
+**Visualization** : 
 
-Matplotlib (v3.10.x) pour les rendus statistiques de haute qualité.
+OpenGL (v3.1.10) for smooth complex 2D & 3D rendering.
 
-**Packaging** : PyInstaller pour la distribution d'exécutables autonomes sous Windows.
+PyQtGraph (v0.13.3) for real-time interactive graphs.
 
-## Installation (Développement)
-Pour cloner le projet et l'exécuter localement :
+Matplotlib (v3.10.x) high grade statistic renders.
 
-**Pour cloner :**
+**Packaging** : PyInstaller for autonomous multi-platform executable distributions.
+
+## Installation (Dev/Source code)
+To clone the project and run locally :
+
+**To clone :**
 
 **Bash**\
 git clone https://github.com/theoszpn/SZPMath.git
 cd SZPMath
 
-**Pour créer un environnement virtuel (Recommandé) :**
+**To create a virtual environment (Recommended) :**
 
 **Bash**\
-python -m venv .venv
-source .venv/bin/activate  # Sur Windows: .venv\Scripts\activate
+python -m venv .venv \
+_MacOS_ : source .venv/bin/activate \
+_Windows_ : .venv\Scripts\activate
 
-**Pour installer les dépendances :**
+**To download dependencies :**
 
 **Bash**\
 pip install -r requirements.txt
 
-**Pour Lancer l'application :**
+**To start application :**
 
 **Bash**\
 python main.py
 
-## Structure du Projet
+## Project Structure
 
 SZPMath_aplha/\
 ├── assets/\
@@ -69,33 +74,33 @@ SZPMath_aplha/\
 └── screenshots/
 
 
-## Roadmap & Évolutions
+## Roadmap & Future evolutions
 
-[ ] Implémentation d'un système d'authentification utilisateur.
+[ ] User authentification system.
 
-[ ] Sauvegarde des calculs en base de données SQLite locale.
+[ ] Local saving of computations (SQLite database)
 
-[ ] Version Premium avec support du calcul tensoriel.
+[ ] Premium version integration very advanced features (tensor calculus, machine learning)
 
-[ ] Export des graphiques en PDF/LaTeX.
+[ ] Graph export in pdf/LateX format.
 
-## Développé par **Théo SZAPPANYOS**, Projet réalisé dans le cadre d'un portfolio technique (Février 2026).
+## Developed by **SZAPPANYOS Théo**, Project completed as part of a technical portfolio (February 2026).
 
-## Annexes :
+## Appendices :
 
-**Captures d'écran | Algèbre Linéaire**
-![Aperçu résolution système Cramer](screenshots/SZPMath_Cramer_Solver.png)
-![Aperçu analyse sous-espaces vectoriels](screenshots/SZPMath_Vector_Spaces.png)
-![Aperçu visualisation 3D](screenshots/SZPMath_3D_Visualization.png)
+**Screenshots | Linear Algebra**
+![Preview : cramer system solver](screenshots/SZPMath_Cramer_Solver.png)
+![Preview : vector space analysis](screenshots/SZPMath_Vector_Spaces.png)
+![Preview : 3D rendering](screenshots/SZPMath_3D_Visualization.png)
 
-**Captures d'écran | Statistiques**
-![Aperçu analyse formes](screenshots/SZPMath_Stats_Shape.png)
-![Aperçu graphiques d'analyse](screenshots/SZPMath_Stats_Graphs.png)
+**Screenshots | Statistics**
+![Preview : shape parameters](screenshots/SZPMath_Stats_Shape.png)
+![Preview : graphs](screenshots/SZPMath_Stats_Graphs.png)
 
-**Captures d'écran | Probabilités**
-![Aperçu interface loi binomiale](screenshots/SZPMath_Probas_Binom.png)
-![Aperçu interface loi normale](screenshots/SZPMath_Probas_Normale.png)
+**Screenshots | Probabilities**
+![Preview : binomial distribution](screenshots/SZPMath_Probas_Binom.png)
+![Preview : normal distribution](screenshots/SZPMath_Probas_Normale.png)
 
-**Captures d'écran | Calculus**
-![Aperçu interface dérivées](screenshots/SZPMath_Calculus_Derivatives.png)
-![Aperçu interface intégrales](screenshots/SZPMath_Probas_Normale.png)
+**Screenshots | Calculus**
+![Preview : Derivatives](screenshots/SZPMath_Calculus_Derivatives.png)
+![Preview : Integrals](screenshots/SZPMath_Probas_Normale.png)
