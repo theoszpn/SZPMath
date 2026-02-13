@@ -33,7 +33,7 @@ Matplotlib (v3.10.x) high grade statistic renders.
 **Packaging** : PyInstaller for autonomous multi-platform executable distributions.
 
 ## Installation (User)
-To download the software (as a .exe), follow the user guide for the latest release.
+To download the software (as a .exe), follow the user guide for the latest release : https://github.com/theoszpn/SZPMath/releases/
 
 ## Installation (Dev/Source code)
 To clone the project and run locally :
