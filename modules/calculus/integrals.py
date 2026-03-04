@@ -116,74 +116,182 @@ class IntegralsPage(QWidget):
 
     def get_integrals_memo_html(self):
         return """
-        <table width="100%" height="100%" border="1" style="border-collapse: collapse; text-align: center; background-color: white; font-size: 18px;">
+        <table width="100%" border="1" style="border-collapse: collapse; text-align: center; background-color: white; font-size: 14px;">
             <tr style="background-color: #2c3e50; color: white;">
-                <th><b>Fonction f(x)</b></th><th><b>Primitive F(x)</b></th>
+                <th width="50%"><b>Fonction f(x)</b></th>
+                <th width="50%"><b>Primitive F(x)</b></th>
             </tr>
+            <tr style="background-color: #f2f2f2;"><td colspan="2"><b>Fonctions Puissances</b></td></tr>
+            <tr><td>0</td><td style="color: #27ae60; font-weight: bold;">k</td></tr>
             <tr><td>k (constante)</td><td style="color: #27ae60; font-weight: bold;">kx</td></tr>
             <tr><td>x<sup>n</sup></td><td style="color: #27ae60; font-weight: bold;">x<sup>n+1</sup> / (n+1)</td></tr>
             <tr><td>1/x</td><td style="color: #27ae60; font-weight: bold;">ln|x|</td></tr>
+            <tr><td>1/x<sup>2</sup></td><td style="color: #27ae60; font-weight: bold;">-1/x</td></tr>
+            <tr><td>1/√x</td><td style="color: #27ae60; font-weight: bold;">2√x</td></tr>
+
+            <tr style="background-color: #f2f2f2;"><td colspan="2"><b>Exponentielles / Logarithmes</b></td></tr>
             <tr><td>e<sup>x</sup></td><td style="color: #27ae60; font-weight: bold;">e<sup>x</sup></td></tr>
+            <tr><td>u'(x)e<sup>u(x)</sup></td><td style="color: #27ae60; font-weight: bold;">e<sup>u(x)</sup></td></tr>
+            <tr><td>u'(x)/u(x)</td><td style="color: #27ae60; font-weight: bold;">ln|u(x)|</td></tr>
+
+            <tr style="background-color: #f2f2f2;"><td colspan="2"><b>Trigonométrie</b></td></tr>
             <tr><td>cos(x)</td><td style="color: #27ae60; font-weight: bold;">sin(x)</td></tr>
             <tr><td>sin(x)</td><td style="color: #27ae60; font-weight: bold;">-cos(x)</td></tr>
-            <tr><td>u'(x) / u(x)</td><td style="color: #27ae60; font-weight: bold;">ln|u(x)|</td></tr>
-            <tr><td>u'(x) e<sup>u(x)</sup></td><td style="color: #27ae60; font-weight: bold;">e<sup>u(x)</sup></td></tr>
-            <tr><td>u'(x) u(x)<sup>n</sup></td><td style="color: #27ae60; font-weight: bold;">u<sup>n+1</sup> / (n+1)</td></tr>
+            <tr><td>1 + tan<sup>2</sup>(x)</td><td style="color: #27ae60; font-weight: bold;">tan(x)</td></tr>
+
+            <tr style="background-color: #f2f2f2;"><td colspan="2"><b>Formes Composées (u fonction)</b></td></tr>
+            <tr><td>u' + v'</td><td style="color: #27ae60; font-weight: bold;">u + v</td></tr>
+            <tr><td>ku'</td><td style="color: #27ae60; font-weight: bold;">ku</td></tr>
+            <tr><td>u'u<sup>n</sup></td><td style="color: #27ae60; font-weight: bold;">u<sup>n+1</sup> / (n+1)</td></tr>
+            <tr><td>u'/√u</td><td style="color: #27ae60; font-weight: bold;">2√u</td></tr>
         </table>
         """
 
-    def clean_math_display(self, expr):
-        return str(expr).replace("**", "^").replace("*", "").replace("exp", "e").replace("log", "ln")
-
     def calculate_all(self):
         try:
-            raw = self.input_func.text().replace(',', '.').replace('e(', 'exp(').replace('e^', 'exp(').replace('ln',
-                                                                                                               'log')
+            raw = self.input_func.text().replace(',', '.')
+            raw = raw.replace('e(', 'exp(').replace('e^', 'exp(').replace('ln', 'log')
+
             self.f = sp.sympify(raw)
             self.F = sp.integrate(self.f, self.x_sym)
 
-            a_val, b_val = float(self.borne_a.text()), float(self.borne_b.text())
-            res_exact = sp.integrate(self.f, (self.x_sym, a_val, b_val))
-            res_num = res_exact.evalf()
+            a_sym = sp.sympify(self.borne_a.text())
+            b_sym = sp.sympify(self.borne_b.text())
+            a_val = float(a_sym.evalf())
+            b_val = float(b_sym.evalf())
 
-            msg = "<b style='color: #2c3e50; font-size: 16px;'>I. ANALYSE DE LA STRUCTURE</b><br>"
+            msg = "<div style='font-size: 15px; line-height: 1.8; font-family: Segoe UI, serif;'>"
+            msg += "<h2 style='color: #27ae60; border-bottom: 2px solid #27ae60; padding-bottom: 5px;'>Démonstration</h2>"
 
-            if self.f.is_Add:
-                msg += "• <i>Propriété de Linéarité :</i> f(x) est une somme de termes. On applique : ∫[u(x) + v(x)]dx = ∫u(x)dx + ∫v(x)dx.<br>"
+            msg += "<b style='color: #2c3e50;'>Étape 1 : Énoncé du problème</b><br>"
+            msg += "L'objectif est de déterminer l'aire de la surface délimitée par la courbe representative de la fonction f, "
+            msg += "l'axe des abscisses et les droites verticales d'équations x = a et x = b.<br>"
+            msg += "On définit l'intégrale I suivante :<br>"
+            msg += f"<center><i style='font-size: 22px;'>I = &int;<sub>{self.format_math(a_sym)}</sub><sup>{self.format_math(b_sym)}</sup> ({self.format_math(self.f)}) dx</i></center><br>"
 
+            msg += "<b style='color: #2c3e50;'>Étape 2 : Analyse de la continuité et domaine</b><br>"
+            intervalle_etude = sp.Interval(min(a_val, b_val), max(a_val, b_val))
+            singularites = sp.singularities(self.f, self.x_sym, intervalle_etude)
+
+            if singularites:
+                msg += "<div style='background: #fff5f5; border: 1px solid #ffcccc; padding: 15px; border-radius: 8px; color: #cc0000;'>"
+                msg += "<b>⚠️ Erreur de définition :</b> La fonction présente des valeurs interdites sur l'intervalle choisi.<br>"
+                msg += f"Points de rupture détectés : { {self.format_math(s) for s in singularites} }.<br>"
+                msg += "Conformément aux conditions de Riemann, f doit être continue pour être intégrable.</div>"
+                self.explanation_box.setHtml(msg)
+                return
+
+            msg += f"La fonction f est continue sur l'intervalle d'étude [{self.format_math(a_sym)} ; {self.format_math(b_sym)}]. "
+            msg += "Elle admet donc des primitives.<br><br>"
+
+            msg += "<b style='color: #2c3e50;'>Étape 3 : Identification de la forme et stratégie</b><br>"
             num, den = sp.fraction(self.f)
-            if den != 1:
-                msg += "• <i>Détection de Fraction :</i> On examine la forme u'(x)/u(x).<br>"
-                u_c = den
+            analysed = False
+
+            if self.f.is_Mul and not any(arg.is_Number for arg in self.f.args):
+                poly = [a for a in self.f.args if a.is_polynomial(self.x_sym)]
+                trans = [a for a in self.f.args if a.has(sp.exp, sp.sin, sp.cos, sp.log)]
+                if poly and trans:
+                    msg += "• On identifie un <b>produit de fonctions de natures différentes</b>.<br>"
+                    msg += "➜ Méthode : <b>Intégration Par Parties (IPP)</b> : &int;uv' = uv - &int;u'v.<br>"
+                    msg += f"➜ On pose u(x) = {self.format_math(poly[0])} et v'(x) = {self.format_math(trans[0])}.<br>"
+                    msg += f"➜ On déduit u'(x) = {self.format_math(sp.diff(poly[0]))} et v(x) = {self.format_math(sp.integrate(trans[0]))}.<br>"
+                    analysed = True
+
+            if not analysed and den != 1:
+                u_c = den.base if den.is_Pow else den
+                n_c = den.exp if den.is_Pow else 1
                 du_c = sp.diff(u_c, self.x_sym)
-                coeff = sp.simplify(num / du_c)
-                if coeff.is_Number:
-                    msg += f"  → Forme reconnue : {coeff} * (u'/u) avec u(x) = {u_c}.<br>"
-                else:
-                    msg += "  → Forme complexe : intégration par décomposition.<br>"
+                k_c = sp.simplify(num / du_c)
 
-            if self.f.has(sp.exp):
-                msg += "• <i>Détection Exponentielle :</i> On cherche la forme u'(x)e^u(x).<br>"
+                if k_c.is_Number:
+                    msg += "• On détecte une structure de type quotient <b>u'/u<sup>n</sup></b>.<br>"
+                    msg += f"➜ On identifie <b>u(x) = {self.format_math(u_c)}</b> et <b>u'(x) = {self.format_math(du_c)}</b>.<br>"
+                    if n_c == 1:
+                        msg += "➜ Formule : La primitive de u'/u est <b>F(x) = ln|u|</b>.<br>"
+                    else:
+                        msg += f"➜ Formule : La primitive de u'/u<sup>{n_c}</sup> est <b>F(x) = -1/((n-1)u<sup>n-1</sup>)</b>.<br>"
+                    if k_c != 1:
+                        msg += f"➜ <b>Ajustement :</b> f(x) = {self.format_math(k_c)} &times; (u'/u<sup>{n_c}</sup>).<br>"
+                    analysed = True
 
-            msg += f"<br><b style='color: #2c3e50; font-size: 16px;'>II. CALCUL DE LA PRIMITIVE</b><br>"
-            msg += f"En utilisant le tableau des primitives usuelles :<br>"
-            msg += f"<center><b style='color:#27ae60; font-size: 18px;'>F(x) = {self.clean_math_display(self.F)} + C</b></center><br>"
+            if not analysed and self.f.has(sp.exp) and not self.f.is_Add:
+                u_arg = list(self.f.atoms(sp.exp))[0].args[0]
+                du_arg = sp.diff(u_arg, self.x_sym)
+                k_exp = sp.simplify(self.f / (sp.exp(u_arg) * du_arg))
+                if k_exp.is_Number:
+                    msg += "• On détecte une structure de type <b>u'e<sup>u</sup></b>.<br>"
+                    msg += f"➜ On pose <b>u(x) = {self.format_math(u_arg)}</b> et sa dérivée <b>u'(x) = {self.format_math(du_arg)}</b>.<br>"
+                    msg += "➜ Formule : La primitive de u'e<sup>u</sup> est <b>F(x) = e<sup>u</sup></b>.<br>"
+                    analysed = True
 
-            msg += f"<b style='color: #2c3e50; font-size: 16px;'>III. ÉVALUATION NUMÉRIQUE (THÉORÈME FONDAMENTAL)</b><br>"
-            msg += f"On calcule la variation de la primitive entre a={a_val} et b={b_val} :<br>"
-            fb = self.F.subs(self.x_sym, b_val).evalf()
-            fa = self.F.subs(self.x_sym, a_val).evalf()
-            msg += f"• F(b) = F({b_val}) = {fb:.4f}<br>"
-            msg += f"• F(a) = F({a_val}) = {fa:.4f}<br>"
-            msg += f"• <b>Résultat :</b> F(b) - F(a) = <span style='color:#3498db; font-weight:bold;'>{res_num:.4f}</span>"
+            if not analysed and (self.f.is_Pow or self.f == self.x_sym or self.f.is_Number):
+                msg += "• On identifie une <b>forme usuelle directe</b> (Puissance ou Constante).<br>"
+                msg += "➜ Formule : La primitive de x<sup>n</sup> est <b>F(x) = x<sup>n+1</sup>/(n+1)</b>.<br>"
+                analysed = True
+
+            if not analysed:
+                msg += "• Analyse par décomposition linéarisée ou identification directe du tableau.<br>"
+
+            msg += "<br><b style='color: #2c3e50;'>Étape 4 : Détermination de la primitive F(x)</b><br>"
+            msg += "En appliquant les règles identifiées, nous déduisons l'expression de la primitive :<br>"
+            msg += f"<div style='background: #fdfdfd; padding: 15px; border: 1px solid #27ae60; border-radius: 8px; margin: 10px 0; text-align: center; font-size: 18px; color: #1e8449;'>"
+            msg += f"<b>F(x) = {self.format_math(self.F)}</b></div>"
+
+            msg += "<b style='color: #2c3e50;'>Étape 5 : Évaluation entre les bornes</b><br>"
+            msg += "La valeur de l'intégrale est :<br>"
+            msg += f"<center><i style='font-size: 20px;'>I = [ {self.format_math(self.F)} ]<sub>{self.format_math(a_sym)}</sub><sup>{self.format_math(b_sym)}</sup></i></center><br>"
+            msg += f"Ce qui conduit au calcul de la différence : <b>I = F({self.format_math(b_sym)}) - F({self.format_math(a_sym)})</b>.<br><br>"
+
+            fb_exact = self.F.subs(self.x_sym, b_sym)
+            fa_exact = self.F.subs(self.x_sym, a_sym)
+
+            msg += f"<b style='color: #2c3e50;'>Étape 6 : Calcul de F({self.format_math(b_sym)})</b><br>"
+            msg += f"<center>F({self.format_math(b_sym)}) = <b>{self.format_math(fb_exact)}</b></center><br>"
+
+            msg += f"<b style='color: #2c3e50;'>Étape 7 : Calcul de F({self.format_math(a_sym)})</b><br>"
+            msg += f"<center>F({self.format_math(a_sym)}) = <b>{self.format_math(fa_exact)}</b></center><br>"
+
+            msg += "<b style='color: #2c3e50;'>Étape 8 : Soustraction finale</b><br>"
+            msg += f"I = ({self.format_math(fb_exact)}) - ({self.format_math(fa_exact)})<br>"
+
+            valeur_exacte = fb_exact - fa_exact
+
+            msg += "<div style='background: #eafaf1; padding: 20px; border: 2px solid #27ae60; border-radius: 10px; margin-top: 15px;'>"
+            msg += f"<b style='color: #219150; font-size: 20px;'>VALEUR EXACTE : I = {self.format_math(valeur_exacte)}</b><br>"
+
+            res_num = float(valeur_exacte.evalf())
+            msg += f"<i style='color: #7f8c8d; font-size: 14px;'>Valeur numérique approchée : I &approx; {res_num:.4f} unités d'aire (u.a.).</i><br>"
+            msg += "</div></div>"
 
             self.explanation_box.setHtml(msg)
-            self.integral_info.setText(f"Résultat : ∫[{a_val} ; {b_val}] f(x) dx = {res_num:.4f} u.a.")
-
+            self.integral_info.setText(f"Résultat : I = {res_num:.4f} u.a.")
             self.update_graph(a_val, b_val)
 
         except Exception as e:
-            self.explanation_box.setText(f"Erreur d'analyse : {e}")
+            self.explanation_box.setText(f"Erreur d'analyse experte : {e}")
+
+    def format_math(self, expr):
+        import re
+        s = str(expr).replace('.0', '')
+
+        s = re.sub(r'exp\((.*?)\)', r'e<sup>\1</sup>', s)
+        s = s.replace('E', 'e')
+
+        def sub_pow(match):
+            base = match.group(1)
+            exp = match.group(2)
+            if base.startswith('(') and base.endswith(')') and len(base) <= 3:
+                base = base[1:-1]
+            return f"{base}<sup>{exp}</sup>"
+
+        s = re.sub(r'([\w\(\)]+)\*\*([\w\(\)\-]+)', sub_pow, s)
+        s = s.replace('**', '^')
+
+        s = s.replace('log', 'ln').replace('sqrt', '&radic;').replace('pi', '&pi;')
+        s = s.replace('*', '&nbsp;')
+
+        return s
 
     def update_from_sliders(self):
         a, b = self.slider_a.value() / 10.0, self.slider_b.value() / 10.0

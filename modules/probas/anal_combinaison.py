@@ -76,7 +76,9 @@ class CombinatoricsPage(QWidget):
     def create_action_btn(self, text, color):
         btn = QPushButton(text)
         btn.setStyleSheet(
-            f"background-color: {color}; color: white; font-weight: bold; padding: 10px; border-radius: 5px;")
+            f"""QPushButton {{ background-color: {color}; color: white; font-weight: bold; padding: 10px; border-radius: 5px; }}
+                QPushButton:hover {{ border-left: 8px solid {color}; }}
+        """)
         return btn
 
     def get_params(self):

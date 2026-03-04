@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget,
                                QVBoxLayout, QHBoxLayout, QPushButton,
                                QLabel, QStackedWidget, QFrame)
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
 
 
 def resource_path(relative_path):
@@ -23,6 +23,7 @@ from modules.algebra.algebra_main import AlgebraModule
 from modules.statisitcs.statistics_main import StatisticsModule
 from modules.probas.probabilities_main import ProbabilitiesModule
 from modules.calculus.calculus_main import CalculusModule
+from modules.dashboard import DashboardPage
 
 class SZPMath(QMainWindow):
     def __init__(self):
@@ -39,7 +40,7 @@ class SZPMath(QMainWindow):
             QPushButton {
                 background-color: transparent; color: #f5f6fa;
                 border: none; padding: 15px; text-align: left;
-                font-size: 14px; border-radius: 5px;
+                font-size: 14px; border-radius: 5px; outline: none;
             }
             QPushButton:hover { background-color: #353b48; }
             #ActiveBtn { background-color: #0097e6; font-weight: bold; }
@@ -54,11 +55,15 @@ class SZPMath(QMainWindow):
         self.sidebar = QFrame()
         self.sidebar.setObjectName("Sidebar")
         self.sidebar.setFixedWidth(220)
+        self.sidebar.setVisible(False)
         sidebar_layout = QVBoxLayout(self.sidebar)
 
+
         self.lbl_logo = QLabel("∑ SZPMath")
-        self.lbl_logo.setStyleSheet("color: white; font-size: 22px; margin: 20px 0; font-weight: bold;")
+        self.lbl_logo.setStyleSheet(
+            "color: white; font-size: 22px; margin: 20px 0; font-weight: bold; padding-left: 15px;")
         sidebar_layout.addWidget(self.lbl_logo)
+
 
         self.btn_alg = QPushButton("  Algèbre Linéaire")
         self.btn_stat = QPushButton("  Statistiques")
@@ -70,7 +75,36 @@ class SZPMath(QMainWindow):
 
         sidebar_layout.addStretch()
 
+        self.btn_back_home = QPushButton()
+        icon_path = resource_path(os.path.join("assets", "icon_home.png"))
+        if os.path.exists(icon_path):
+            self.btn_back_home.setIcon(QIcon(icon_path))
+            self.btn_back_home.setIconSize(QSize(28, 28))
+
+        self.btn_back_home.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_back_home.setFixedSize(45, 45)
+        self.btn_back_home.setStyleSheet("""
+            QPushButton {
+                color: white;
+                border: none;
+                padding: 0px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 10px;
+                margin-left: 2px;
+            }
+            QPushButton:hover {
+                background-color: #353b48;
+            }
+        """)
+
+        sidebar_layout.addWidget(self.btn_back_home)
+
         self.content = QStackedWidget()
+
+        self.dashboard = DashboardPage()
+        self.content.addWidget(self.dashboard)
 
         self.module_algebra = AlgebraModule()
         self.module_stat = StatisticsModule()
@@ -85,11 +119,21 @@ class SZPMath(QMainWindow):
         self.layout.addWidget(self.sidebar, 0)
         self.layout.addWidget(self.content, 1)
 
-        self.btn_alg.clicked.connect(lambda: self.content.setCurrentIndex(0))
-        self.btn_stat.clicked.connect(lambda: self.content.setCurrentIndex(1))
-        self.btn_proba.clicked.connect(lambda: self.content.setCurrentIndex(2))
-        self.btn_calc.clicked.connect(lambda: self.content.setCurrentIndex(3))
+        self.dashboard.module_selected.connect(self.switch_to_module)
+        self.btn_back_home.clicked.connect(self.show_dashboard)
 
+        self.btn_alg.clicked.connect(lambda: self.switch_to_module(1))
+        self.btn_stat.clicked.connect(lambda: self.switch_to_module(2))
+        self.btn_proba.clicked.connect(lambda: self.switch_to_module(3))
+        self.btn_calc.clicked.connect(lambda: self.switch_to_module(4))
+
+    def switch_to_module(self, index):
+        self.content.setCurrentIndex(index)
+        self.sidebar.setVisible(True)
+
+    def show_dashboard(self):
+        self.content.setCurrentIndex(0)
+        self.sidebar.setVisible(False)
 
 if __name__ == "__main__":
     if sys.platform == 'win32':
@@ -102,7 +146,7 @@ if __name__ == "__main__":
 
     os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "1"
     app = QApplication(sys.argv)
-
+    app.setAttribute(Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
     path_to_ico = resource_path(os.path.join("assets", "SZPMath_icon.ico"))
 
     if os.path.exists(path_to_ico):

@@ -87,14 +87,19 @@ class LimitsPage(QWidget):
 
         self.btn_calc = QPushButton("ANALYSER LA LIMITE")
         self.btn_calc.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_calc.setStyleSheet(
-            "background-color: #e67e22; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none; margin-top: 10px;")
+        self.btn_calc.setStyleSheet("""
+            QPushButton { background-color: #e67e22; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none; margin-top: 10px; }
+            QPushButton:hover { background-color: #f0a15b; }
+            """)
+
         self.cp_layout.addWidget(self.btn_calc)
 
         self.btn_continuity = QPushButton("ANALYSER LA CONTINUITÉ")
         self.btn_continuity.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_continuity.setStyleSheet(
-            "background-color: #27ae60; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none; margin-top: 5px;")
+        self.btn_continuity.setStyleSheet("""
+            QPushButton { background-color: #27ae60; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none; margin-top: 5px; }
+            QPushButton:hover { background-color: #50de8c; }
+            """)
         self.cp_layout.addWidget(self.btn_continuity)
 
         self.cp_layout.addStretch()

@@ -93,8 +93,10 @@ class DiscreteLawsPage(QWidget):
 
         self.btn_calc = QPushButton("CALCULER L'ANALYSE")
         self.btn_calc.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_calc.setStyleSheet(
-            "background-color: #2980b9; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none;")
+        self.btn_calc.setStyleSheet("""
+            QPushButton { background-color: #2980b9; color: white; font-weight: bold; padding: 12px; border-radius: 5px; border: none; }
+            QPushButton:hover { background-color: #5fb2ed; }
+            """)
         self.cp_layout.addWidget(self.btn_calc)
 
         self.cp_layout.addStretch()
